@@ -23,6 +23,7 @@ class Local:
         self.playername = None
         self.trackerDict = {}
         self.session = requests.Session()
+        self.handCount = 0
         self.playedCards = {}
         self.graveyard = {}
         self.opGraveyard = {}
@@ -31,6 +32,7 @@ class Local:
         self.static_decklist = None
         self.trackJson = {}
         self.updatePlayernames()
+
     # call this function after changes server in the tracker
     def reset(self):
         self.opponentName = None
@@ -48,11 +50,14 @@ class Local:
     def updateTracker(self, rectangles):
         if rectangles is None:
             return
+        self.handCount = 0
         for card in rectangles:
             if card['LocalPlayer'] is True:
                 self.playedCards[card['CardID']] = card['CardCode']
             else:
                 self.graveyard[card['CardID']] = card['CardCode']
+            if card['TopLeftY'] - card['Height'] < 10:
+                self.handCount += 1
         # have to know if player have changed cards
         if len(self.playedCards) == 5 and len(self.graveyard) == 1:
             self.playedCards = {}
@@ -159,6 +164,7 @@ class Local:
             self.trackJson['positional_rectangles'] = self.positional_rectangles
             return self.trackJson
 
+        self.trackJson['hand_size'] = self.handCount
         self.trackJson['positional_rectangles'] = self.positional_rectangles
         self.trackJson['deck_tracker'] = self.trackerDict
         

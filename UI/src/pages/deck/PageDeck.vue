@@ -7,6 +7,9 @@
             {{loadingText}}
         </div> 
 
+        <div class="handSize" v-if="!isLoading">
+            Hand Size: {{handSize}}
+        </div>
         <div class="errorText" v-if="isInvalidDeckCode && isShowCode">Invalid Deck Code</div>
         <!-- <button @click="requestData">Test Request</button> -->
 
@@ -150,6 +153,8 @@ export default {
             oppoName: null,
             oppoRank: null,
             oppoTag: null,
+
+            handSize: 0,
         }
     },
     computed: {
@@ -375,6 +380,10 @@ export default {
                 this.myGraveCode = null
                 this.oppoGraveCode = null
             }
+
+            if (data.hand_size) {
+                this.handSize = data.hand_size;
+            }
         },
         processJsonData(data) {
 
@@ -433,6 +442,10 @@ export default {
 
     .errorText {
         margin-top: 20px;
+        font-size: 1.2em;
+    }
+
+    .handSize {
         font-size: 1.2em;
     }
 
