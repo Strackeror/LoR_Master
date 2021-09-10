@@ -32,7 +32,7 @@ const headerHeight = 45 // Repeated in preload.js
 const defaultRatio = 2.3 // Repeated in preload.js
 
 const spawnService = true
-const spawnPython = true
+const spawnPython = false
 var python
 
 if (spawnService) {
@@ -167,7 +167,6 @@ function newMainWindow() {
   // mainWindow.setAlwaysOnTop(true, level = "pop-up-menu")
   mainWindow.on('closed', () => {
     mainWindow = null
-    app.quit()
   })
 
   if (developmentMode) mainWindow.webContents.openDevTools()
@@ -237,7 +236,8 @@ function newDeckWindow() {
   // deckWindow.removeMenu()
   deckWindow.setAlwaysOnTop(true, level = "pop-up-menu")
   deckWindow.on('closed', () => {
-    deckWindow = null
+    deckWindow = null;
+    app.quit()
   })
 
   if (developmentMode) deckWindow.webContents.openDevTools()
